@@ -95,7 +95,6 @@ function render() {
     //// UPDATE
     // KEYBOARD
     if (KEYBOARD.pressed("a") || KEYBOARD.pressed("z") || KEYBOARD.pressed("e") || KEYBOARD.pressed("r") || KEYBOARD.pressed("t") || KEYBOARD.pressed("y") || KEYBOARD.pressed("u") || KEYBOARD.pressed("i") || KEYBOARD.pressed("o") || KEYBOARD.pressed("p") || KEYBOARD.pressed("q") || KEYBOARD.pressed("s") || KEYBOARD.pressed("d") || KEYBOARD.pressed("f") || KEYBOARD.pressed("g") || KEYBOARD.pressed("h") || KEYBOARD.pressed("j") || KEYBOARD.pressed("k") || KEYBOARD.pressed("l") || KEYBOARD.pressed("m") || KEYBOARD.pressed("w") || KEYBOARD.pressed("x") || KEYBOARD.pressed("c") || KEYBOARD.pressed("v") || KEYBOARD.pressed("b") || KEYBOARD.pressed("n")) {
-        //console.log(KEYBOARD.keyCodes);
 
         var geometry = new THREE.BoxGeometry(1, 1, 1);
         var material = new THREE.MeshBasicMaterial({
@@ -114,31 +113,25 @@ function render() {
         var radius = 10;
         var numberOfObjects = 10;
 
-        //var objects = new Array(numberOfObjects);
-
         var objects = [];
 
 
         for (var i = 0; i < numberOfObjects; i++) {
             var obj = new THREE.Mesh(geometry, material);
 
-            obj.name = Math.random();
-
             obj.position.x = (Math.random() - 0.5) * radius;
             obj.position.y = (Math.random() - 0.5) * radius;
 
-            // TODO: Faire toutes ces modifs en fonction du nombre magique, et pas du random
-            obj.material.color.r = Math.random();
-            obj.material.color.g = Math.random();
-            obj.material.color.b = Math.random();
-
             obj.scale.x = Math.random();
             obj.scale.y = Math.random();
-            //obj.scale.z = Math.random();
 
             obj.rotation.x = Math.random();
             obj.rotation.y = Math.random();
             obj.rotation.z = Math.random();
+
+            obj.material.color.r = Math.random();
+            obj.material.color.g = Math.random();
+            obj.material.color.b = Math.random();
 
             SCENE.add(obj);
 
@@ -172,32 +165,3 @@ $(document).ready(function () {
     init();
     render();
 });
-
-
-
-var CustomRandom = function (nseed) {
-
-    var seed,
-        constant = Math.pow(2, 13) + 1,
-        prime = 37,
-        maximum = Math.pow(2, 50);
-
-    if (nseed) {
-        seed = nseed;
-    }
-
-    if (seed == null) {
-        //if there is no seed, use timestamp
-        seed = (new Date()).getTime();
-    }
-
-    return {
-        next: function () {
-            seed *= constant;
-            seed += prime;
-            seed %= maximum;
-
-            return seed;
-        }
-    }
-}
