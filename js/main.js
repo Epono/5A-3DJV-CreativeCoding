@@ -15,10 +15,17 @@ function init()
     SCENE.add( OBJECT );
     
     CAMERA.position.z = 5;
+
+    KEYBOARD = new THREEx.KeyboardState();
 }
 
 function render()
 {
+    if( KEYBOARD.pressed("z") ) 
+    {
+        console.log('lol');
+    }
+
     requestAnimationFrame( render );
 
     OBJECT.rotation.x += 0.05;
@@ -27,9 +34,10 @@ function render()
     RENDERER.render(SCENE, CAMERA);   
 }
 
-$(document).ready(function() {
-   
+$(document).ready(function() 
+{
     init();
     render();
-    
 });
+
+
