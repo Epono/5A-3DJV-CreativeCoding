@@ -1,3 +1,5 @@
+var mousePos;
+
 function init()
 {
     SCENE = new THREE.Scene();
@@ -17,6 +19,27 @@ function init()
     CAMERA.position.z = 5;
 
     KEYBOARD = new THREEx.KeyboardState();
+
+    console.log(RENDERER);
+
+    CANVAS = RENDERER.domElement;
+
+    CANVAS.addEventListener('mousemove', function(evt) {
+        var rect = CANVAS.getBoundingClientRect();
+        mousePos = {
+          x : evt.clientX - rect.left,
+          y : evt.clientY - rect.top
+        };
+        //console.log(mousePos);
+    }, false);
+
+    CANVAS.addEventListener('mousedown', function(evt) {
+        console.log(evt);
+    }, false);
+
+    CANVAS.addEventListener('mouseup', function(evt) {
+        console.log(evt);
+    }, false);
 }
 
 function render()
@@ -39,5 +62,11 @@ $(document).ready(function()
     init();
     render();
 });
+
+
+      function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return 
+      }
 
 
