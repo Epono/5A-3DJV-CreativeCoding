@@ -101,7 +101,6 @@ function render() {
         var material = new THREE.MeshBasicMaterial({
             color: 0x00ff00
         });
-        var obj = new THREE.Mesh(geometry, material);
 
         var nombreMagique = 0;
         for (var i = 0; i < 26; i++) {
@@ -111,35 +110,47 @@ function render() {
         }
 
         Math.seedrandom(nombreMagique);
-        console.log(Math.random());
-        console.log(Math.random());
-        console.log(Math.random());
-        console.log(Math.random());
 
         var radius = 10;
-        obj.position.x = (Math.random() - 0.5) * radius;
-        obj.position.y = (Math.random() - 0.5) * radius;
+        var numberOfObjects = 10;
 
-        // TODO: Faire toutes ces modifs en fonction du nombre magique, et pas du random
-        obj.material.color.r = Math.random();
-        obj.material.color.g = Math.random();
-        obj.material.color.b = Math.random();
+        //var objects = new Array(numberOfObjects);
 
-        obj.scale.x = Math.random();
-        obj.scale.y = Math.random();
-        obj.scale.z = Math.random();
+        var objects = [];
 
-        obj.rotation.x = Math.random();
-        obj.rotation.y = Math.random();
-        obj.rotation.z = Math.random();
 
-        SCENE.add(obj);
+        for (var i = 0; i < numberOfObjects; i++) {
+            var obj = new THREE.Mesh(geometry, material);
 
-        setTimeout(function () {
-            SCENE.remove(obj);
+            obj.name = Math.random();
 
-        }, 1000);
+            obj.position.x = (Math.random() - 0.5) * radius;
+            obj.position.y = (Math.random() - 0.5) * radius;
+
+            // TODO: Faire toutes ces modifs en fonction du nombre magique, et pas du random
+            obj.material.color.r = Math.random();
+            obj.material.color.g = Math.random();
+            obj.material.color.b = Math.random();
+
+            obj.scale.x = Math.random();
+            obj.scale.y = Math.random();
+            //obj.scale.z = Math.random();
+
+            obj.rotation.x = Math.random();
+            obj.rotation.y = Math.random();
+            obj.rotation.z = Math.random();
+
+            SCENE.add(obj);
+
+            objects.push(obj);
+        }
     }
+
+    setTimeout(function () {
+        for (var i = 0; i < numberOfObjects; i++) {
+            SCENE.remove(objects[i]);
+        }
+    }, 200);
 
     // MOUSE
     if (mouse.leftDown) {
