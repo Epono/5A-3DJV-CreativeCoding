@@ -1,8 +1,8 @@
+//////////////////////////////////////////////////////////////////////////////////// LES VARIABLES GLOBALES C'EST LE BIEN
 var SCENE = null;
 var CAMERA = null;
 var RENDERER = null;
 var OBJECT = null;
-var KEYBOARD = null;
 var CANVAS = null;
 
 var mouseSpeed = 0.02;
@@ -20,6 +20,45 @@ var mouse = {
     rightDown: false
 }
 
+var music = null;
+var sounds = {};
+
+//////////////////////////////////////////////////////////////////////////////////// TRUCS PROCESSING
+function preload() {
+    music = loadSound('assets/music/titanium.mp3');
+    music.setVolume(0.1);
+
+
+    sounds['A'] = loadSound('assets/sounds/A - AAAAH.mp3');
+    sounds['A'].setVolume(0.1);
+
+    sounds['B'] = loadSound('assets/sounds/B - bass.mp3');
+    sounds['B'].setVolume(0.1);
+
+    sounds['F'] = loadSound('assets/sounds/F - batard.mp3');
+    sounds['F'].setVolume(0.1);
+
+    sounds['H'] = loadSound('assets/sounds/H - HINHINHIN.mp3');
+    sounds['H'].setVolume(0.1);
+
+    sounds['K'] = loadSound('assets/sounds/K - Keuwa.mp3');
+    sounds['K'].setVolume(0.2);
+
+    sounds['M'] = loadSound('assets/sounds/M - mais je comprends pas.wav');
+    sounds['M'].setVolume(0.2);
+
+    sounds['N'] = loadSound('assets/sounds/N - non.mp3');
+    sounds['N'].setVolume(0.2);
+
+    sounds['S'] = loadSound('assets/sounds/S - You got completely shitfaced.wav');
+    sounds['S'].setVolume(0.2);
+}
+
+function setup() {
+    // PROCESSING
+}
+
+//////////////////////////////////////////////////////////////////////////////////// INIT SCENE
 function init() {
     SCENE = new THREE.Scene();
 
@@ -38,8 +77,6 @@ function init() {
     SCENE.add(OBJECT);
 
     CAMERA.position.z = 5;
-
-    KEYBOARD = new THREEx.KeyboardState();
 
     CANVAS = RENDERER.domElement;
 
@@ -91,22 +128,19 @@ function init() {
     }, false);
 }
 
-function render() {
-    //// UPDATE
-    // KEYBOARD
-    if (KEYBOARD.pressed("a") || KEYBOARD.pressed("z") || KEYBOARD.pressed("e") || KEYBOARD.pressed("r") || KEYBOARD.pressed("t") || KEYBOARD.pressed("y") || KEYBOARD.pressed("u") || KEYBOARD.pressed("i") || KEYBOARD.pressed("o") || KEYBOARD.pressed("p") || KEYBOARD.pressed("q") || KEYBOARD.pressed("s") || KEYBOARD.pressed("d") || KEYBOARD.pressed("f") || KEYBOARD.pressed("g") || KEYBOARD.pressed("h") || KEYBOARD.pressed("j") || KEYBOARD.pressed("k") || KEYBOARD.pressed("l") || KEYBOARD.pressed("m") || KEYBOARD.pressed("w") || KEYBOARD.pressed("x") || KEYBOARD.pressed("c") || KEYBOARD.pressed("v") || KEYBOARD.pressed("b") || KEYBOARD.pressed("n")) {
+//////////////////////////////////////////////////////////////////////////////////// "UPDATE" CLAVIER
+document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode >= 65 && evt.keyCode <= 90) {
+        if (sounds[String.fromCharCode(evt.keyCode)]) {
+            sounds[String.fromCharCode(evt.keyCode)].play();
+        }
 
         var geometry = new THREE.BoxGeometry(1, 1, 1);
         var material = new THREE.MeshBasicMaterial({
             color: 0x00ff00
         });
 
-        var nombreMagique = 0;
-        for (var i = 0; i < 26; i++) {
-            if (KEYBOARD.keyCodes[65 + i]) {
-                nombreMagique += Math.pow(2, i);
-            }
-        }
+        var nombreMagique = Math.pow(2, evt.keyCode - 64);
 
         Math.seedrandom(nombreMagique);
 
@@ -114,7 +148,6 @@ function render() {
         var numberOfObjects = 10;
 
         var objects = [];
-
 
         for (var i = 0; i < numberOfObjects; i++) {
             var obj = new THREE.Mesh(geometry, material);
@@ -137,14 +170,26 @@ function render() {
 
             objects.push(obj);
         }
+
+        setTimeout(function () {
+            for (var i = 0; i < numberOfObjects; i++) {
+                SCENE.remove(objects[i]);
+            }
+        }, 200);
     }
 
-    setTimeout(function () {
-        for (var i = 0; i < numberOfObjects; i++) {
-            SCENE.remove(objects[i]);
+    console.log(evt.keyCode);
+    if (evt.keyCode === 101) {
+        if (music.isPlaying()) {
+            music.stop();
+        } else {
+            music.loop();
         }
-    }, 200);
+    }
+});
 
+//////////////////////////////////////////////////////////////////////////////////// UPDATE (SOURIS ET LOGIC)
+function update() {
     // MOUSE
     if (mouse.leftDown) {
         OBJECT.position.x += mouse.deltaPos.x * mouseSpeed;
@@ -154,13 +199,20 @@ function render() {
     // OTHER
     OBJECT.rotation.x += 0.05;
     OBJECT.rotation.y += 0.05;
+}
+
+//////////////////////////////////////////////////////////////////////////////////// RENDER
+function render() {
+    // TODO: Faire un update avec une fréquence fixe
+    update();
 
     // RENDER
     requestAnimationFrame(render);
-
     RENDERER.render(SCENE, CAMERA);
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////// Le début quoi
 $(document).ready(function () {
     init();
     render();
