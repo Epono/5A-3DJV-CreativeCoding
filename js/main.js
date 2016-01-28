@@ -125,13 +125,12 @@ function update() {
         OBJ_SPHERE.scale.z = basse / 200;
 
 
-        for (var index = 0; index < OBJECTS_FRONT.length; index += 5) {
-            if (mid > 0) {
-                OBJECTS_FRONT[index].scale.x = mid / 100;
-                OBJECTS_FRONT[index].scale.y = mid / 80;
-                OBJECTS_FRONT[index].scale.z = mid / 5;
-                if (mid > 180)
-                    OBJECTS_FRONT[i].rotation.z += mid / 5;
+        for (var index = 0; index < OBJECTS_FRONT.length; index += 1) {
+            if (basse > 0) {
+                OBJECTS_FRONT[index].scale.x = basse / 5;
+                //OBJECTS_FRONT[index].scale.y = basse / 80;
+                //OBJECTS_FRONT[index].scale.z = basse / 5;
+                
             }
 
         }
@@ -139,9 +138,10 @@ function update() {
         for (var index = 0; index < OBJECTS_MID.length; index += 5) {
 
             OBJECTS_MID[index].scale.z = treble;
+            OBJECTS_BACK[index].scale.y = mid   ;//scaleValue + anotherAnotherScaleValue * 3;
         }
         
-        //OBJECTS_BACK[i].scale.y += scaleValue + anotherAnotherScaleValue * 3;
+        
         
     }
 
