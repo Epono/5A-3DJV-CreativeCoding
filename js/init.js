@@ -197,7 +197,7 @@ function init() {
     var materialSkybox = new THREE.MeshFaceMaterial(mats);
 
     // GEOMETRIES
-    var geometrySphere = new THREE.SphereGeometry(1, 32, 32);
+    var geometrySphere = new THREE.SphereGeometry(1, 16, 16);
     var geometrySkybox = new THREE.BoxGeometry(20, 20, 20);
 
     var geometryObjFront = new THREE.BoxGeometry(0.1, 0.2, 0.1);
