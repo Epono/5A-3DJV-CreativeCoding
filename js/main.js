@@ -99,16 +99,20 @@ function update() {
     if (mySoundAnalyser) {
         var analyseResult = mySoundAnalyser.analyze();
         var yolo = mySoundAnalyser.getEnergy("bass");
-        if (yolo > 185) {
-            uniforms.colors.value.x = 1.0;
+		console.log(mySoundAnalyser.getEnergy("bass") / 255.0);
+		uniforms.colors.value.x = mySoundAnalyser.getEnergy("bass") / 255.0;
+		uniforms.colors.value.y = mySoundAnalyser.getEnergy("mid") / 255.0;
+		uniforms.colors.value.z = mySoundAnalyser.getEnergy("treble") / 255.0;
+//        if (yolo > 185) {
+//            uniforms.colors.value.x = 1.0;
+//
+//        } else {
+//            uniforms.colors.value.x = 0.0;
+//        }
 
-        } else {
-            uniforms.colors.value.x = 0.0;
-        }
-
-        OBJ_SPHERE.scale.x = yolo / 100;
-        OBJ_SPHERE.scale.y = yolo / 100;
-        OBJ_SPHERE.scale.z = yolo / 100;
+        OBJ_SPHERE.scale.x = yolo / 500;
+        OBJ_SPHERE.scale.y = yolo / 500;
+        OBJ_SPHERE.scale.z = yolo / 500;
     }
 }
 

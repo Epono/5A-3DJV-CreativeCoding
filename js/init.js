@@ -25,7 +25,7 @@ var mouse = {
     leftDown: false,
     middleButton: false,
     rightDown: false
-}
+};
 
 // Pour faire une simulation unique à chaque lancement (en plus du nombreMagique)
 var startTime = Date.now();
@@ -77,11 +77,6 @@ function init() {
         uniforms: uniforms,
         vertexShader: document.getElementById("simple.vs").textContent,
         fragmentShader: document.getElementById("simple.fs").textContent
-    });
-
-    var materialSkybox = new THREE.MeshBasicMaterial({
-        color: 0xfff000,
-        side: THREE.DoubleSide
     });
 
     var mats = []; // gauche, droite, haut, bas, derriere, devant
