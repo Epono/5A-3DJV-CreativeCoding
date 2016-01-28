@@ -2,14 +2,25 @@
 
 <head>
     <title>Creative Coding</title>
-    <link rel="icon" type="image/ico" href="favicon.ico"/>
+    <link rel="icon" type="image/ico" href="favicon.ico" />
     <link rel="stylesheet" href="css/main.css">
+    <script id="shader-vs" type="x-shader/x-vertex">
+        void main(void) { 
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); 
+        }
+    </script>
+    <script id="shader-fs" type="x-shader/x-fragment">
+        void main(void) { 
+            gl_FragColor = vec4(0.5, 0.5, 0.5, 1.0); 
+        }
+    </script>
 </head>
 
 <body>
 </body>
 <!-- Ajout des libs -->
 <script type="text/javascript" src="libs/three.min.js"></script>
+<script type="text/javascript" src="libs/OrbitControls.js"></script>
 <script type="text/javascript" src="libs/jquery-2.2.0.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>
 
