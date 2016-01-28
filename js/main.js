@@ -43,10 +43,50 @@ var startTime = Date.now();
 var music = null;
 var sounds = {};
 
+var MaxValue = 2;
+var MinValue = 0;
+var actualValue = 0;
+var move = 0.01;
+var actualScale = 0;
+var scaleValue = 0.1;
+var anotherScaleValue = 0.2;
+var anotherAnotherScaleValue = 0.7;
+
+var uniforms = {
+    colors: {
+        type: 'v3',
+        value: new THREE.Vector3(0.0, 0.0, 0.0)
+    },
+    Alpha: {
+        type: 'f',
+        value: 1.0
+    },
+    light: {
+        type: 'v3',
+        value: new THREE.Vector3(0.5, 0.2, 1.0)
+    }
+};
+
+var OBJECT2 = null;
+
+
+
+var SKYBOX = null;
+var OBJECTS = [];
+var CIRCLEOBJECTS1 = [];
+var CIRCLEOBJECTS2 = [];
+
+var mySound = null;
+var mySoundAnalyser = null;
+
 //////////////////////////////////////////////////////////////////////////////////// TRUCS PROCESSING
 function preload() {
-    music = loadSound('assets/music/titanium.mp3', function () {
-        console.log('Music loaded !')
+    music = loadSound('assets/musics/Lancelot - You\'ll Never Be Mine.mp3', function () {
+        console.log('Music loaded !');
+        music.setVolume(0.1);
+        music.play();
+
+        mySoundAnalyser = new p5.FFT();
     });
     music.setVolume(0.1);
 
@@ -81,10 +121,17 @@ function preload() {
 
 function setup() {
     // Pour le chargement de la musique
+
+    //mySoundAnalyser.setInput(mySound);
 }
 var date = Date.now();
 //////////////////////////////////////////////////////////////////////////////////// INIT SCENE
 function init() {
+
+    var geometry = new THREE.BoxGeometry(0.1, 0.2, 0.1);
+    var geometry2 = new THREE.BoxGeometry(0.05, 0.1, 0.1);
+    var geometry3 = new THREE.BoxGeometry(0.025, 0.05, 0.1);
+
     SCENE = new THREE.Scene();
 
     CAMERA = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -93,36 +140,134 @@ function init() {
     RENDERER.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(RENDERER.domElement);
 
-    var geometry = new THREE.BoxGeometry(1, 1, 1);
 
-    // Material de base
-    var material = new THREE.MeshBasicMaterial({
-        color: 0x00ff00
-    });
-
-    // Material avec des shaders
-    var vShader = document.getElementById('shader-vs');
-    var fShader = document.getElementById('shader-fs');
-    material = new THREE.ShaderMaterial({
-
-        vertexShader: vShader.textContent,
-        fragmentShader: fShader.textContent
-    });
-
-    OBJECT = new THREE.Mesh(geometry, material);
-
-    SCENE.add(OBJECT);
 
     CAMERA.position.z = 5;
 
     CANVAS = RENDERER.domElement;
 
-    SCENE.fog = new THREE.FogExp2(0xcccccc, 0.002);
-    RENDERER.setClearColor(SCENE.fog.color);
+    RENDERER.setClearColor(0xfff000);
 
     CONTROLS = new THREE.OrbitControls(CAMERA, RENDERER.domElement);
     CONTROLS.enableDamping = true;
     CONTROLS.dampingFactor = 0.25;
+
+
+
+
+
+
+
+
+
+    //var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    var material = new THREE.ShaderMaterial({
+        uniforms: {
+            Rcolor: {
+                type: 'f',
+                value: 0.6
+            },
+            Gcolor: {
+                type: 'f',
+                value: 0.1
+            },
+            Bcolor: {
+                type: 'f',
+                value: 0.3
+            },
+            Alpha: {
+                type: 'f',
+                value: 1.0
+            }
+        },
+        vertexShader: document.getElementById("simple.vs").textContent,
+        fragmentShader: document.getElementById("simple.fs").textContent
+
+
+    });
+    OBJECT = new THREE.Mesh(geometry, material);
+
+
+    //var geometrySkybox = new THREE.BoxGeometry(10,10,10);
+    var geometrySkybox = new THREE.PlaneGeometry(20, 20);
+    var materialSkybox = new THREE.MeshBasicMaterial({
+        color: 0xffffff
+    });
+
+
+    //MY TEST ZONE
+
+    var geometryObj = new THREE.SphereGeometry(1, 32, 32);
+    var materialObj = new THREE.ShaderMaterial({
+        uniforms: uniforms,
+        vertexShader: document.getElementById("simple.vs").textContent,
+        fragmentShader: document.getElementById("simple.fs").textContent
+
+
+    });
+
+    OBJECT2 = new THREE.Mesh(geometryObj, materialObj);
+
+    SKYBOX = new THREE.Mesh(geometrySkybox, materialSkybox);
+
+
+
+    //JON TEST
+
+    var PI = 3.14;
+    var theta_scale = 0.03;
+    var i = 0;
+    var j = 0;
+    var k = 0;
+    for (var theta = 0; theta < 2 * PI; theta += theta_scale) {
+        var x = 3 * Math.cos(theta);
+        var y = 3 * Math.sin(theta);
+        OBJECTS[i] = new THREE.Mesh(geometry, materialObj);
+        OBJECTS[i].position.x = x;
+        OBJECTS[i].position.z = 0;
+        OBJECTS[i].position.y = y;
+        OBJECTS[i].rotation.z = theta;
+        SCENE.add(OBJECTS[i]);
+        i++;
+    }
+
+    for (var theta = 0; theta < 2 * PI; theta += theta_scale) {
+        var x2 = 2 * Math.cos(theta);
+        var y2 = 2 * Math.sin(theta);
+        CIRCLEOBJECTS1[j] = new THREE.Mesh(geometry2, materialObj);
+        CIRCLEOBJECTS1[j].position.x = x2;
+        CIRCLEOBJECTS1[j].position.z = -3;
+        CIRCLEOBJECTS1[j].position.y = y2;
+        CIRCLEOBJECTS1[j].rotation.z = theta;
+
+        SCENE.add(CIRCLEOBJECTS1[j]);
+        j++;
+    }
+    for (var theta = 0; theta < 2 * PI; theta += theta_scale) {
+        var x3 = 1 * Math.cos(theta);
+        var y3 = 1 * Math.sin(theta);
+        CIRCLEOBJECTS2[k] = new THREE.Mesh(geometry3, materialObj);
+        CIRCLEOBJECTS2[k].position.x = x3;
+        CIRCLEOBJECTS2[k].position.z = -5;
+        CIRCLEOBJECTS2[k].position.y = y3;
+        CIRCLEOBJECTS2[k].rotation.z = theta;
+
+        SCENE.add(CIRCLEOBJECTS2[k]);
+        k++;
+    }
+    //
+
+
+    SCENE.add(OBJECT2);
+    //SCENE.add(SKYBOX);
+
+
+
+
+
+
+
+
 
     // MOUSE
     CANVAS.addEventListener('mousemove', function (evt) {
@@ -254,6 +399,60 @@ function render() {
 
     // RENDER
     requestAnimationFrame(render);
+
+    for (var i = 0; i < OBJECTS.length; i++) {
+        //OBJECTS[i].position.x += move;
+
+    }
+
+    for (var i = 0; i < OBJECTS.length; i += 2) {
+        //OBJECTS[i].position.x += move;
+        OBJECTS[i].scale.x += scaleValue;
+    }
+    for (var i = 1; i < OBJECTS.length; i += 5) {
+        //OBJECTS[i].position.x += move;
+        OBJECTS[i].scale.x += scaleValue + anotherScaleValue;
+        CIRCLEOBJECTS1[i].scale.z += scaleValue + anotherScaleValue * 9;
+        CIRCLEOBJECTS2[i].scale.y += scaleValue + anotherAnotherScaleValue * 3;
+    }
+
+    actualValue += move;
+    actualScale += scaleValue;
+
+    if (actualValue > MaxValue || actualValue < MinValue) {
+        move *= -1;
+
+    }
+
+    if (actualScale > MaxValue || actualScale < MinValue) {
+        scaleValue *= -1;
+    }
+
+    if (actualScale > 6 || actualScale < 0) {
+        anotherScaleValue *= -1;
+        anotherAnotherScaleValue *= -1
+    }
+
+
+    //Modification des couleures en fonction du son
+    if (mySoundAnalyser) {
+        var analyseResult = mySoundAnalyser.analyze();
+        var yolo = mySoundAnalyser.getEnergy("bass");
+        if (yolo > 185) {
+            uniforms.colors.value.x = 1.0;
+
+        } else {
+            uniforms.colors.value.x = 0.0;
+        }
+
+
+
+        OBJECT2.scale.x = yolo / 100;
+        OBJECT2.scale.y = yolo / 100;
+        OBJECT2.scale.z = yolo / 100;
+    }
+
+
     RENDERER.render(SCENE, CAMERA);
 }
 

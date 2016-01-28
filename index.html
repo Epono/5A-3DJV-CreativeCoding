@@ -4,14 +4,47 @@
     <title>Creative Coding</title>
     <link rel="icon" type="image/ico" href="favicon.ico" />
     <link rel="stylesheet" href="css/main.css">
-    <script id="shader-vs" type="x-shader/x-vertex">
-        void main(void) { 
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); 
+    <script id="simple.vs" type="x-shader/x-vertex">
+        varying vec3 vNormal;
+
+        void main() {
+            // Determine the normal of the vertex
+            vNormal = normal * normalMatrix;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);            
         }
     </script>
-    <script id="shader-fs" type="x-shader/x-fragment">
-        void main(void) { 
-            gl_FragColor = vec4(0.5, 0.5, 0.5, 1.0); 
+    <script id="simple.fs" type="x-shader/x-fragment">
+        uniform float Rcolor;
+        uniform float Gcolor;
+        uniform float Bcolor;
+
+        uniform vec3 colors;
+        uniform float Alpha;
+        varying vec3 vNormal;
+
+        uniform vec3 light;
+
+        vec4 CelShading ( vec4 color ) {
+            vec3 lightDir = vec3(0.5, 0.2, 1.0);
+
+            float Intensity = dot( light , normalize(vNormal) );
+
+            float factor = 0.4;
+
+            if      ( Intensity > 0.95 ) factor = 1.0;
+            else if ( Intensity > 0.5  ) factor = 0.7;
+            else if ( Intensity > 0.25 ) factor = 0.4;
+            color *= vec4 ( factor, factor, factor, 1.0 );
+
+            return color;
+        }
+ 
+        void main() { 
+            vec4 color = vec4(colors, Alpha);
+
+            color = CelShading(color);
+
+            gl_FragColor = color ;
         }
     </script>
 </head>
