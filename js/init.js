@@ -121,9 +121,10 @@ var uniformsSkyboxFront = {
     }
 }
 
-
-
 var skyboxRotationEnabled = false;
+var rotationFrontObjects = 0;
+var rotationFrontObjectsMax = 3 * Math.PI;
+var rotationFrontObjectsStep = Math.PI / 15;
 
 //////////////////////////////////////////////////////////////////////////////////// INIT SCENE
 function init() {

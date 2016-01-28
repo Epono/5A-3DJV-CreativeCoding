@@ -61,6 +61,8 @@ document.addEventListener('keydown', function (evt) {
         }
     } else if (evt.keyCode === 100) {
         skyboxRotationEnabled = !skyboxRotationEnabled;
+    } else if (evt.keyCode === 102) {
+        rotationFrontObjects = rotationFrontObjectsMax;
     }
 });
 
@@ -81,7 +83,7 @@ function update() {
 
     for (var i = 1; i < OBJECTS_FRONT.length; i += 5) {
         //OBJECTS_FRONT[i].position.x += move;
-        
+
         //OBJECTS_FRONT[i].scale.x += scaleValue + anotherScaleValue;
         //OBJECTS_MID[i].scale.z += scaleValue + anotherScaleValue * 9;
         //OBJECTS_BACK[i].scale.y += scaleValue + anotherAnotherScaleValue * 3;
@@ -140,9 +142,9 @@ function update() {
 
             OBJECTS_MID[index].scale.z = treble;
         }
-        
+
         //OBJECTS_BACK[i].scale.y += scaleValue + anotherAnotherScaleValue * 3;
-        
+
     }
 
     if (skyboxRotationEnabled) {
@@ -157,6 +159,13 @@ function update() {
     uniformsSkyboxBottom.time.value = (elapsedTime / 1200.);
     uniformsSkyboxBack.time.value = (elapsedTime / 1100.);
     uniformsSkyboxFront.time.value = (elapsedTime / 1000.);
+
+    if (rotationFrontObjects > 0) {
+        for (var i = 0; i < OBJECTS_FRONT.length; i++) {
+            OBJECTS_FRONT[i].rotateX(rotationFrontObjectsStep);
+        }
+        rotationFrontObjects -= rotationFrontObjectsStep;
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////// RENDER
