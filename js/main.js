@@ -120,9 +120,18 @@ function update() {
         //            uniforms.colors.value.x = 0.0;
         //        }
 
-        OBJ_SPHERE.scale.x = basse / 200;
-        OBJ_SPHERE.scale.y = basse / 200;
-        OBJ_SPHERE.scale.z = basse / 200;
+        if(basse /200 > 0)
+        {
+            OBJ_SPHERE.scale.x = basse / 200;
+            OBJ_SPHERE.scale.y = basse / 200;
+            OBJ_SPHERE.scale.z = basse / 200;    
+        }
+        else{
+            OBJ_SPHERE.scale.x = 100;
+            OBJ_SPHERE.scale.y = 100;
+            OBJ_SPHERE.scale.z = 100;
+        }
+        
 
 
         for (var index = 0; index < OBJECTS_FRONT.length; index += 5) {
@@ -131,14 +140,14 @@ function update() {
                 OBJECTS_FRONT[index].scale.y = mid / 80;
                 OBJECTS_FRONT[index].scale.z = mid / 5;
                 if (mid > 180)
-                    OBJECTS_FRONT[i].rotation.z += mid / 5;
+                    OBJECTS_FRONT[index].rotation.z += mid / 5;
             }
 
         }
 
         for (var index = 0; index < OBJECTS_MID.length; index += 5) {
-
-            OBJECTS_MID[index].scale.z = treble;
+            if(treble > 0)
+                OBJECTS_MID[index].scale.z = treble;
         }
         
         //OBJECTS_BACK[i].scale.y += scaleValue + anotherAnotherScaleValue * 3;

@@ -4,9 +4,9 @@ var mySoundAnalyser = null;
 
 //////////////////////////////////////////////////////////////////////////////////// TRUCS PROCESSING
 function preload() {
-    music = loadSound('assets/musics/DJ Sona C.mp3', function () {
+    music = loadSound('assets/musics/Dream Fiction.m4a', function () {
         console.log('Music loaded !');
-        music.setVolume(0.1);
+        music.setVolume(1);
         music.play();
 
         mySoundAnalyser = new p5.FFT();
