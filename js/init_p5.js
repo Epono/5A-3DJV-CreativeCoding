@@ -13,29 +13,23 @@ function preload() {
     });
     music.setVolume(0.1);
 
-    sounds['A'] = loadSound('assets/sounds/A - AAAAH.mp3');
-    sounds['A'].setVolume(0.1);
+    sounds['W'] = loadSound('assets/sounds/drumkit1.mp3');
+    sounds['W'].setVolume(1);
 
-    sounds['B'] = loadSound('assets/sounds/B - bass.mp3');
-    sounds['B'].setVolume(0.1);
+    sounds['X'] = loadSound('assets/sounds/drumkit2.mp3');
+    sounds['X'].setVolume(1);
 
-    sounds['F'] = loadSound('assets/sounds/F - batard.mp3');
-    sounds['F'].setVolume(1);
+    sounds['C'] = loadSound('assets/sounds/drumkit3.mp3');
+    sounds['C'].setVolume(1);
 
-    sounds['H'] = loadSound('assets/sounds/H - HINHINHIN.mp3');
-    sounds['H'].setVolume(0.1);
+    sounds['V'] = loadSound('assets/sounds/drumkit4.mp3');
+    sounds['V'].setVolume(1);
 
-    sounds['K'] = loadSound('assets/sounds/K - Keuwa.mp3');
-    sounds['K'].setVolume(0.2);
+    sounds['B'] = loadSound('assets/sounds/HINHINHIN.mp3');
+    sounds['B'].setVolume(0.5);
 
-    sounds['M'] = loadSound('assets/sounds/M - mais je comprends pas.wav');
-    sounds['M'].setVolume(0.2);
-
-    sounds['N'] = loadSound('assets/sounds/N - non.mp3');
-    sounds['N'].setVolume(0.2);
-
-    sounds['S'] = loadSound('assets/sounds/S - You got completely shitfaced.wav');
-    sounds['S'].setVolume(1);
+    sounds['N'] = loadSound('assets/sounds/non.mp3');
+    sounds['N'].setVolume(0.5);
 
     // Pour cacher le cnnvas processing
     $('#p5_loading').hide();
