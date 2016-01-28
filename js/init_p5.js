@@ -4,7 +4,7 @@ var mySoundAnalyser = null;
 
 //////////////////////////////////////////////////////////////////////////////////// TRUCS PROCESSING
 function preload() {
-    music = loadSound('assets/musics/DJ Sona K.mp3', function () {
+    music = loadSound('assets/musics/DJ Sona C.mp3', function () {
         console.log('Music loaded !');
         music.setVolume(0.1);
         music.play();

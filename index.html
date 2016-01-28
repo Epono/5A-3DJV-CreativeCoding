@@ -10,7 +10,7 @@
         void main() {
             // Determine the normal of the vertex
             vNormal = normal * normalMatrix;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);            
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);  
         }
     </script>
     <script id="simple.fs" type="x-shader/x-fragment">
@@ -45,6 +45,39 @@
             color = CelShading(color);
 
             gl_FragColor = color ;
+        }
+    </script>
+    
+    <script id="quasicrystal.vs" type="x-shader/x-vertex">
+        void main() {
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);  
+        }
+    </script>
+    <script id="quasicrystal.fs" type="x-shader/x-fragment">
+        uniform float time;
+        uniform vec3 color;
+
+        float wave(vec2 p, float angle) {
+          vec2 direction = vec2(cos(angle), sin(angle));
+          return cos(dot(p, direction));
+        }
+
+        float wrap(float x) {
+          return abs(mod(x, 2.)-1.);
+        }
+
+        void main() {
+          vec2 p = (gl_FragCoord - 0.5).xy * 0.05;
+
+          float brightness = 0.;
+          for (float i = 1.; i <= 11.; i++) {
+            brightness += wave(p, time / i);
+          }
+
+          brightness = wrap(brightness);
+
+          gl_FragColor.rgb = vec3(brightness) * color;
+          gl_FragColor.a = 1.;
         }
     </script>
 </head>

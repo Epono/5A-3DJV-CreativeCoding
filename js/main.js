@@ -15,7 +15,7 @@ document.addEventListener('keydown', function (evt) {
         Math.seedrandom(nombreMagique + startTime);
 
         var radius = 20;
-        var numberOfObjects = 40;
+        var numberOfObjects = 60;
 
         var objects = [];
 
@@ -58,11 +58,17 @@ document.addEventListener('keydown', function (evt) {
                 music.loop();
             }
         }
+    } else if (evt.keyCode === 100) {
+        skyboxRotationEnabled = !skyboxRotationEnabled;
     }
 });
 
 //////////////////////////////////////////////////////////////////////////////////// UPDATE (SOURIS ET LOGIC)
 function update() {
+    deltaTime = Date.now() - previousTime;
+    elapsedTime += deltaTime;
+    previousTime = Date.now();
+
     for (var i = 0; i < OBJECTS_FRONT.length; i++) {
         //OBJECTS_FRONT[i].position.x += move;
     }
@@ -114,6 +120,19 @@ function update() {
         OBJ_SPHERE.scale.y = yolo / 500;
         OBJ_SPHERE.scale.z = yolo / 500;
     }
+
+    if (skyboxRotationEnabled) {
+        OBJ_SKYBOX.rotateX(0.01);
+        OBJ_SKYBOX.rotateY(0.02);
+        OBJ_SKYBOX.rotateZ(0.03);
+    }
+
+    uniformsSkyboxLeft.time.value = (elapsedTime / 900.);
+    uniformsSkyboxRight.time.value = (elapsedTime / 800.);
+    uniformsSkyboxTop.time.value = (elapsedTime / 1000.);
+    uniformsSkyboxBottom.time.value = (elapsedTime / 1200.);
+    uniformsSkyboxBack.time.value = (elapsedTime / 1100.);
+    uniformsSkyboxFront.time.value = (elapsedTime / 1000.);
 }
 
 //////////////////////////////////////////////////////////////////////////////////// RENDER

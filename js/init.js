@@ -30,6 +30,10 @@ var mouse = {
 // Pour faire une simulation unique à chaque lancement (en plus du nombreMagique)
 var startTime = Date.now();
 
+var elapsedTime = 0;
+var previousTime = Date.now();
+var deltaTime = 0;
+
 var MaxValue = 2;
 var MinValue = 0;
 var actualValue = 0;
@@ -53,6 +57,73 @@ var uniforms = {
         value: new THREE.Vector3(0.5, 0.2, 1.0)
     }
 };
+
+// SKYBOX
+var uniformsSkyboxLeft = {
+    time: {
+        type: 'f',
+        value: 0
+    },
+    color: {
+        type: 'v3',
+        value: new THREE.Vector3(1.0, 0.34, 0.0)
+    }
+}
+var uniformsSkyboxRight = {
+    time: {
+        type: 'f',
+        value: 0
+    },
+    color: {
+        type: 'v3',
+        value: new THREE.Vector3(0.8, 0.1, 0.3)
+    }
+}
+var uniformsSkyboxTop = {
+    time: {
+        type: 'f',
+        value: 0
+    },
+    color: {
+        type: 'v3',
+        value: new THREE.Vector3(0.0, 1.0, 0.0)
+    }
+}
+var uniformsSkyboxBottom = {
+    time: {
+        type: 'f',
+        value: 0
+    },
+    color: {
+        type: 'v3',
+        value: new THREE.Vector3(0.0, 0.0, 1.0)
+    }
+}
+var uniformsSkyboxBack = {
+    time: {
+        type: 'f',
+        value: 0
+    },
+    color: {
+        type: 'v3',
+        value: new THREE.Vector3(1.0, 1.0, 1.0)
+    }
+}
+
+var uniformsSkyboxFront = {
+    time: {
+        type: 'f',
+        value: 0
+    },
+    color: {
+        type: 'v3',
+        value: new THREE.Vector3(1.0, 1.0, 0.0)
+    }
+}
+
+
+
+var skyboxRotationEnabled = false;
 
 //////////////////////////////////////////////////////////////////////////////////// INIT SCENE
 function init() {
@@ -80,30 +151,49 @@ function init() {
     });
 
     var mats = []; // gauche, droite, haut, bas, derriere, devant
-    mats.push(new THREE.MeshBasicMaterial({
-        color: 0xff5800,
+    mats.push(new THREE.ShaderMaterial({
+        uniforms: uniformsSkyboxLeft,
+        // color: 0xff5800,
+        vertexShader: document.getElementById("quasicrystal.vs").textContent,
+        fragmentShader: document.getElementById("quasicrystal.fs").textContent,
         side: THREE.DoubleSide
     }));
-    mats.push(new THREE.MeshBasicMaterial({
-        color: 0xC41E3A,
+    mats.push(new THREE.ShaderMaterial({
+        uniforms: uniformsSkyboxRight,
+        // color: 0xC41E3A,
+        vertexShader: document.getElementById("quasicrystal.vs").textContent,
+        fragmentShader: document.getElementById("quasicrystal.fs").textContent,
         side: THREE.DoubleSide
     }));
-    mats.push(new THREE.MeshBasicMaterial({
-        color: 0x009e60,
+    mats.push(new THREE.ShaderMaterial({
+        uniforms: uniformsSkyboxTop,
+        // color: 0x009e60,
+        vertexShader: document.getElementById("quasicrystal.vs").textContent,
+        fragmentShader: document.getElementById("quasicrystal.fs").textContent,
         side: THREE.DoubleSide
     }));
-    mats.push(new THREE.MeshBasicMaterial({
-        color: 0x0051ba,
+    mats.push(new THREE.ShaderMaterial({
+        uniforms: uniformsSkyboxBottom,
+        // color: 0x0051ba,
+        vertexShader: document.getElementById("quasicrystal.vs").textContent,
+        fragmentShader: document.getElementById("quasicrystal.fs").textContent,
         side: THREE.DoubleSide
     }));
-    mats.push(new THREE.MeshBasicMaterial({
-        color: 0xffffff,
+    mats.push(new THREE.ShaderMaterial({
+        uniforms: uniformsSkyboxBack,
+        // color: 0xffffff,
+        vertexShader: document.getElementById("quasicrystal.vs").textContent,
+        fragmentShader: document.getElementById("quasicrystal.fs").textContent,
         side: THREE.DoubleSide
     }));
-    mats.push(new THREE.MeshBasicMaterial({
-        color: 0xffd500,
+    mats.push(new THREE.ShaderMaterial({
+        uniforms: uniformsSkyboxFront,
+        // color: 0xffd500,
+        vertexShader: document.getElementById("quasicrystal.vs").textContent,
+        fragmentShader: document.getElementById("quasicrystal.fs").textContent,
         side: THREE.DoubleSide
     }));
+
     var materialSkybox = new THREE.MeshFaceMaterial(mats);
 
     // GEOMETRIES
