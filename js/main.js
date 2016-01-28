@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////// "UPDATE" CLAVIER
 document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode >= 65 && evt.keyCode <= 90) {
+    if (evt.keyCode >= 65 && evt.keyCode <= 90 && evt.shiftKey) {
         if (sounds[String.fromCharCode(evt.keyCode)]) {
             sounds[String.fromCharCode(evt.keyCode)].play();
         }
