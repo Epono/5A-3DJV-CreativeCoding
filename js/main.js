@@ -1,3 +1,4 @@
+/* global OBJECTS_FRONT */
 //////////////////////////////////////////////////////////////////////////////////// "UPDATE" CLAVIER
 document.addEventListener('keydown', function (evt) {
     if (evt.keyCode >= 65 && evt.keyCode <= 90 && evt.shiftKey) {
@@ -75,14 +76,15 @@ function update() {
 
     for (var i = 0; i < OBJECTS_FRONT.length; i += 2) {
         //OBJECTS_FRONT[i].position.x += move;
-        OBJECTS_FRONT[i].scale.x += scaleValue;
+        //OBJECTS_FRONT[i].scale.x += scaleValue;
     }
 
     for (var i = 1; i < OBJECTS_FRONT.length; i += 5) {
         //OBJECTS_FRONT[i].position.x += move;
-        OBJECTS_FRONT[i].scale.x += scaleValue + anotherScaleValue;
-        OBJECTS_MID[i].scale.z += scaleValue + anotherScaleValue * 9;
-        OBJECTS_BACK[i].scale.y += scaleValue + anotherAnotherScaleValue * 3;
+        
+        //OBJECTS_FRONT[i].scale.x += scaleValue + anotherScaleValue;
+        //OBJECTS_MID[i].scale.z += scaleValue + anotherScaleValue * 9;
+        //OBJECTS_BACK[i].scale.y += scaleValue + anotherAnotherScaleValue * 3;
     }
 
     actualValue += move;
@@ -104,15 +106,43 @@ function update() {
     //Modification des couleures en fonction du son
     if (mySoundAnalyser) {
         var analyseResult = mySoundAnalyser.analyze();
-        var yolo = mySoundAnalyser.getEnergy("bass");
-		console.log(mySoundAnalyser.getEnergy("bass") / 255.0);
-		uniforms.colors.value.x = mySoundAnalyser.getEnergy("bass") / 255.0;
-		uniforms.colors.value.y = mySoundAnalyser.getEnergy("mid") / 255.0;
-		uniforms.colors.value.z = mySoundAnalyser.getEnergy("treble") / 255.0;
+        var basse = mySoundAnalyser.getEnergy("bass");
+        var treble = mySoundAnalyser.getEnergy("treble");
+        var mid = mySoundAnalyser.getEnergy("mid");
+        //console.log(mySoundAnalyser.getEnergy("bass") / 255.0);
+        uniforms.colors.value.x = mySoundAnalyser.getEnergy("bass") / 255.0;
+        uniforms.colors.value.y = mySoundAnalyser.getEnergy("mid") / 255.0;
+        uniforms.colors.value.z = mySoundAnalyser.getEnergy("treble") / 255.0;
+        //        if (yolo > 185) {
+        //            uniforms.colors.value.x = 1.0;
+        //
+        //        } else {
+        //            uniforms.colors.value.x = 0.0;
+        //        }
 
-        OBJ_SPHERE.scale.x = yolo / 100;
-        OBJ_SPHERE.scale.y = yolo / 100;
-        OBJ_SPHERE.scale.z = yolo / 100;
+        OBJ_SPHERE.scale.x = basse / 200;
+        OBJ_SPHERE.scale.y = basse / 200;
+        OBJ_SPHERE.scale.z = basse / 200;
+
+
+        for (var index = 0; index < OBJECTS_FRONT.length; index += 5) {
+            if (mid > 0) {
+                OBJECTS_FRONT[index].scale.x = mid / 100;
+                OBJECTS_FRONT[index].scale.y = mid / 80;
+                OBJECTS_FRONT[index].scale.z = mid / 5;
+                if (mid > 180)
+                    OBJECTS_FRONT[i].rotation.z += mid / 5;
+            }
+
+        }
+
+        for (var index = 0; index < OBJECTS_MID.length; index += 5) {
+
+            OBJECTS_MID[index].scale.z = treble;
+        }
+        
+        //OBJECTS_BACK[i].scale.y += scaleValue + anotherAnotherScaleValue * 3;
+        
     }
 
     if (skyboxRotationEnabled) {
