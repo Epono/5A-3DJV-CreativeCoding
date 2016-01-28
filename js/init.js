@@ -84,9 +84,36 @@ function init() {
         side: THREE.DoubleSide
     });
 
+    var mats = []; // gauche, droite, haut, bas, derriere, devant
+    mats.push(new THREE.MeshBasicMaterial({
+        color: 0xff5800,
+        side: THREE.DoubleSide
+    }));
+    mats.push(new THREE.MeshBasicMaterial({
+        color: 0xC41E3A,
+        side: THREE.DoubleSide
+    }));
+    mats.push(new THREE.MeshBasicMaterial({
+        color: 0x009e60,
+        side: THREE.DoubleSide
+    }));
+    mats.push(new THREE.MeshBasicMaterial({
+        color: 0x0051ba,
+        side: THREE.DoubleSide
+    }));
+    mats.push(new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        side: THREE.DoubleSide
+    }));
+    mats.push(new THREE.MeshBasicMaterial({
+        color: 0xffd500,
+        side: THREE.DoubleSide
+    }));
+    var materialSkybox = new THREE.MeshFaceMaterial(mats);
+
     // GEOMETRIES
     var geometrySphere = new THREE.SphereGeometry(1, 32, 32);
-    var geometrySkybox = new THREE.BoxGeometry(100, 100, 100);
+    var geometrySkybox = new THREE.BoxGeometry(20, 20, 20);
 
     var geometryObjFront = new THREE.BoxGeometry(0.1, 0.2, 0.1);
     var geometryObjMid = new THREE.BoxGeometry(0.05, 0.1, 0.1);
