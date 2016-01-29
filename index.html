@@ -80,6 +80,38 @@
           gl_FragColor.a = 1.;
         }
     </script>
+    
+     <script id="glow.vs" type="x-shader/x-vertex">
+        varying vec3 vNormal;
+
+        void main() {
+            // Determine the normal of the vertex
+            vNormal = normal * normalMatrix;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);  
+        }
+    </script>
+    <script id="glow.fs" type="x-shader/x-fragment">
+        out vec4 FragColor;
+        
+
+    uniform sampler2D scene;
+    uniform sampler2D bloomBlur;
+    uniform float exposure;
+
+    void main()
+    {             
+        const float gamma = 2.2;
+    //vec3 hdrColor = texture(scene, TexCoords).rgb;      
+    vec3 bloomColor = texture(bloomBlur, TexCoords).rgb;
+    hdrColor += bloomColor; // additive blending
+    // tone mapping
+    vec3 result = vec3(1.0) - exp(-hdrColor * exposure);
+    // also gamma correct while we're at it       
+    result = pow(result, vec3(1.0 / gamma));
+    gl_FragColor = vec4(result, 1.0f);
+    }  
+    </script>
+    
 </head>
 
 <body>
@@ -95,6 +127,14 @@
 <script type="text/javascript" src="libs/p5.sound.min.js"></script>
 <script type="text/javascript" src="libs/GPUParticleSystem.js"></script>
 <script type="text/javascript" src="libs/dat.gui.min.js"></script>
+<script src="libs/CopyShader.js"></script>
+		<script src="libs/DigitalGlitch.js"></script>
+    
+    <script src="libs/EffectComposer.js"></script>
+    <script src="libs/RenderPass.js"></script>
+		<script src="libs/MaskPass.js"></script>
+		<script src="libs/ShaderPass.js"></script>
+		<script src="libs/GlitchPass.js"></script>
 
 <!-- Ajout des scripts custom -->
 <script type="text/javascript" src="js/main.js"></script>

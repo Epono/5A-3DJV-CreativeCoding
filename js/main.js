@@ -47,6 +47,9 @@ document.addEventListener('keydown', function (evt) {
     } else if (evt.keyCode === 102) {
         rotationFrontObjects = rotationFrontObjectsMax;
     }
+      else if (evt.keyCode === 103) {
+        glitchPass.goWild = !glitchPass.goWild;
+    }
 });
 
 //////////////////////////////////////////////////////////////////////////////////// UPDATE (SOURIS ET LOGIC)
@@ -179,7 +182,8 @@ function update() {
 function run() {
     update();
     requestAnimationFrame(run);
-    RENDERER.render(SCENE, CAMERA);
+    composer.render();
+    //RENDERER.render(SCENE, CAMERA);
 }
 
 //////////////////////////////////////////////////////////////////////////////////// Le début quoi

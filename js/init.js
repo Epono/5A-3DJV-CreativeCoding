@@ -5,6 +5,10 @@ var RENDERER = null;
 var CANVAS = null;
 var CONTROLS = null;
 
+
+var glitchPass = null;
+var composer = null;
+
 var OBJ_SPHERE = null;
 var OBJ_SPHERE2 = null;
 var OBJ_SPHERE3 = null;
@@ -45,6 +49,10 @@ var actualScale = 0;
 var scaleValue = 0.1;
 var anotherScaleValue = 0.2;
 var anotherAnotherScaleValue = 0.7;
+
+
+
+
 
 // COLORS FOR EACH FORM
 var uniformsSphere = {
@@ -498,4 +506,21 @@ function init() {
 
         RENDERER.setSize(window.innerWidth, window.innerHeight);
     }, false);
+    
+    
+    
+    
+    ////TEST YOLO
+    
+    // postprocessing
+
+				composer = new THREE.EffectComposer( RENDERER );
+				composer.addPass( new THREE.RenderPass( SCENE, CAMERA ) );
+
+				glitchPass = new THREE.GlitchPass();
+				glitchPass.renderToScreen = true;
+				composer.addPass( glitchPass );
+    
+    
+    
 }
