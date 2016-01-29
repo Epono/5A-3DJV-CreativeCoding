@@ -4,7 +4,7 @@ var mySoundAnalyser = null;
 
 //////////////////////////////////////////////////////////////////////////////////// TRUCS PROCESSING
 function preload() {
-    music = loadSound("assets/musics/Lancelot - You'll Never Be Mine.mp3", function () {
+    music = loadSound("assets/musics/David Guetta - Tomorrow Can Wait - Summer Eletrohits 5.mp3", function () {
         console.log('Music loaded !');
         music.setVolume(0.1);
         music.play();
