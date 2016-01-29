@@ -73,6 +73,8 @@ document.addEventListener('keydown', function (evt) {
         }
     } else if (evt.keyCode === 100) {
         skyboxRotationEnabled = !skyboxRotationEnabled;
+    } else if (evt.keyCode === 102) {
+        rotationFrontObjects = rotationFrontObjectsMax;
     }
 });
 
@@ -177,6 +179,12 @@ function update() {
         OBJ_SKYBOX.rotateX(0.01);
         OBJ_SKYBOX.rotateY(0.02);
         OBJ_SKYBOX.rotateZ(0.03);
+    }
+
+    if (OBJ_SKYBOX2) {
+        OBJ_SKYBOX2.rotateX(-0.03);
+        OBJ_SKYBOX2.rotateY(-0.02);
+        OBJ_SKYBOX2.rotateZ(-0.01);
     }
 
     uniformsSkyboxLeft.time.value = (elapsedTime / 900.);
