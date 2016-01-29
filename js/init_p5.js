@@ -16,7 +16,7 @@ function preload() {
     sounds['W'] = loadSound('assets/sounds/drumkit1.mp3');
     sounds['W'].setVolume(1);
 
-    sounds['X'] = loadSound('assets/sounds/drumkit2.mp3');
+    sounds['X'] = loadSound('assets/sounds/5331.MP3');
     sounds['X'].setVolume(1);
 
     sounds['C'] = loadSound('assets/sounds/drumkit3.mp3');
