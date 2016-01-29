@@ -6,6 +6,8 @@ var CANVAS = null;
 var CONTROLS = null;
 
 var OBJ_SPHERE = null;
+var OBJ_SPHERE2 = null;
+var OBJ_SPHERE3 = null;
 var OBJ_SKYBOX = null;
 
 var OBJECTS_FRONT = [];
@@ -140,7 +142,7 @@ options = [{
     color: 0xaa88ff,
     colorRandomness: .2,
     turbulence: 0.,
-    lifetime: 5,
+    lifetime: .5,
     size: 20,
     sizeRandomness: 1
 }, {
@@ -151,7 +153,7 @@ options = [{
     color: 0xaa88ff,
     colorRandomness: .2,
     turbulence: 0.,
-    lifetime: 5,
+    lifetime: .5,
     size: 20,
     sizeRandomness: 1
 }, {
@@ -162,7 +164,7 @@ options = [{
     color: 0xaa88ff,
     colorRandomness: .2,
     turbulence: 0.,
-    lifetime: 5,
+    lifetime: .5,
     size: 20,
     sizeRandomness: 1
 }, {
@@ -173,7 +175,7 @@ options = [{
     color: 0xaa88ff,
     colorRandomness: .2,
     turbulence: 0.,
-    lifetime: 5,
+    lifetime: .5,
     size: 20,
     sizeRandomness: 1
 }, {
@@ -184,7 +186,7 @@ options = [{
     color: 0xaa88ff,
     colorRandomness: .2,
     turbulence: 0.,
-    lifetime: 5,
+    lifetime: .5,
     size: 20,
     sizeRandomness: 1
 }];
@@ -324,9 +326,19 @@ function init() {
 
     // SPHERE  + "SKYBOX"
     OBJ_SPHERE = new THREE.Mesh(geometrySphere, materialObj);
+    OBJ_SPHERE2 = new THREE.Mesh(geometrySphere, materialObj);
+    OBJ_SPHERE3 = new THREE.Mesh(geometrySphere, materialObj);
+    
+    OBJ_SPHERE2.position.x = 5
+    OBJ_SPHERE3.position.x = -5
+    OBJ_SPHERE2.position.y = 5
+    OBJ_SPHERE3.position.y = 5
+    
     OBJ_SKYBOX = new THREE.Mesh(geometrySkybox, materialSkybox);
 
     SCENE.add(OBJ_SPHERE);
+    SCENE.add(OBJ_SPHERE2);
+    SCENE.add(OBJ_SPHERE3);
     SCENE.add(OBJ_SKYBOX);
 
     for (var i = 0; i < 5; i++) {

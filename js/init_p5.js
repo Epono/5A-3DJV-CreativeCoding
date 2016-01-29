@@ -4,9 +4,9 @@ var mySoundAnalyser = null;
 
 //////////////////////////////////////////////////////////////////////////////////// TRUCS PROCESSING
 function preload() {
-    music = loadSound('assets/musics/Dream Fiction.m4a', function () {
+    music = loadSound("assets/musics/Lancelot - You'll Never Be Mine.mp3", function () {
         console.log('Music loaded !');
-        music.setVolume(1);
+        music.setVolume(0.1);
         music.play();
 
         mySoundAnalyser = new p5.FFT();
