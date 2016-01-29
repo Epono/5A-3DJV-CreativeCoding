@@ -82,8 +82,10 @@ function update() {
     elapsedTime += deltaTime;
     previousTime = Date.now();
 
-    for (var i = 0; i < OBJECTS_FRONT.length; i++) {
+    for (var i = 0; i < OBJECTS_MID.length; i++) {
+        OBJECTS_MID[i].rotation.y += move ;
         //OBJECTS_FRONT[i].position.x += move;
+        //OBJECTS_FRONT[i].position.z += move;
     }
 
     for (var i = 0; i < OBJECTS_FRONT.length; i += 2) {
@@ -115,38 +117,59 @@ function update() {
         anotherAnotherScaleValue *= -1
     }
 
+    //////////////////////////////////////////////////////LUCAS TEST////////////////////////////
     //Modification des couleures en fonction du son
     if (mySoundAnalyser) {
-        var analyseResult = mySoundAnalyser.analyze();
+        var analyseResult = mySoundAnalyser.analyze(1024);
         var basse = mySoundAnalyser.getEnergy("bass");
         var treble = mySoundAnalyser.getEnergy("treble");
         var mid = mySoundAnalyser.getEnergy("mid");
         //console.log(mySoundAnalyser.getEnergy("bass") / 255.0);
-        uniforms.colors.value.x = mySoundAnalyser.getEnergy("bass") / 255.0;
-        uniforms.colors.value.y = mySoundAnalyser.getEnergy("mid") / 255.0;
-        uniforms.colors.value.z = mySoundAnalyser.getEnergy("treble") / 255.0;
-        //        if (yolo > 185) {
-        //            uniforms.colors.value.x = 1.0;
-        //
-        //        } else {
-        //            uniforms.colors.value.x = 0.0;
-        //        }
+        uniformsObjFront.colors.value.x = 1.0; //mySoundAnalyser.getEnergy("bass") / 255.0;
+        uniformsObjFront.colors.value.y = mySoundAnalyser.getEnergy("mid") / 255.0;
+        uniformsObjFront.colors.value.z = 0.7; // mySoundAnalyser.getEnergy("treble") / 255.0;
+        
+        uniformsObjMid.colors.value.x = 0.0;//mySoundAnalyser.getEnergy("bass") / 255.0;
+        uniformsObjMid.colors.value.y = 0.9;
+        uniformsObjMid.colors.value.z = 0.5; // mySoundAnalyser.getEnergy("treble") / 255.0;
+        
+        
+        uniformsObjBack.colors.value.x = 0.6;//mySoundAnalyser.getEnergy("bass") / 255.0;
+        uniformsObjBack.colors.value.y = 0.0;
+        uniformsObjBack.colors.value.z = 0.0; // mySoundAnalyser.getEnergy("treble") / 255.0;
+        
+        
+        uniformsSphere.colors.value.x = 24/255;//mySoundAnalyser.getEnergy("bass") / 255.0;
+        uniformsSphere.colors.value.y = 234/255;
+        uniformsSphere.colors.value.z = 245/255; // mySoundAnalyser.getEnergy("treble") / 255.0;
+        
+        
+       
 
-        OBJ_SPHERE.scale.x = basse / 200;
-        OBJ_SPHERE.scale.y = basse / 200;
-        OBJ_SPHERE.scale.z = basse / 200;
+        OBJ_SPHERE.scale.x = basse / 100;
+        OBJ_SPHERE.scale.y = basse / 100;
+        OBJ_SPHERE.scale.z = basse / 100;
 
+        
+        for (var index = 0; index < OBJECTS_MID.length; index += 1) {
+            
+            OBJECTS_MID[index].scale.z = analyseResult[index]; 
+            
+        }
+        
+        
+        
         for (var index = 0; index < OBJECTS_FRONT.length; index += 1) {
             if (basse > 0) {
-                OBJECTS_FRONT[index].scale.x = basse / 5;
+                OBJECTS_FRONT[index].scale.x = basse / 20;
                 //OBJECTS_FRONT[index].scale.y = basse / 80;
                 //OBJECTS_FRONT[index].scale.z = basse / 5;
             }
         }
 
         for (var index = 0; index < OBJECTS_MID.length; index += 5) {
-            OBJECTS_MID[index].scale.z = treble;
-            OBJECTS_BACK[index].scale.y = mid; //scaleValue + anotherAnotherScaleValue * 3;
+            //OBJECTS_MID[index].scale.z = treble * 10;
+            OBJECTS_BACK[index].scale.y = mid * 3   ; 
         }
     }
 

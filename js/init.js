@@ -36,8 +36,8 @@ var elapsedTime = 0;
 var previousTime = Date.now();
 var deltaTime = 0;
 
-var MaxValue = 2;
-var MinValue = 0;
+var MaxValue = 0.2;
+var MinValue = -0.2;
 var actualValue = 0;
 var move = 0.01;
 var actualScale = 0;
@@ -45,7 +45,55 @@ var scaleValue = 0.1;
 var anotherScaleValue = 0.2;
 var anotherAnotherScaleValue = 0.7;
 
-var uniforms = {
+// COLORS FOR EACH FORM
+var uniformsSphere = {
+    colors: {
+        type: 'v3',
+        value: new THREE.Vector3(0.0, 0.0, 0.0)
+    },
+    Alpha: {
+        type: 'f',
+        value: 0.3
+    },
+    light: {
+        type: 'v3',
+        value: new THREE.Vector3(0.5, 0.2, 1.0)
+    }
+};
+
+var uniformsObjFront = {
+    colors: {
+        type: 'v3',
+        value: new THREE.Vector3(0.0, 0.0, 0.0)
+    },
+    Alpha: {
+        type: 'f',
+        value: 1.0
+    },
+    light: {
+        type: 'v3',
+        value: new THREE.Vector3(0.5, 0.2, 1.0)
+    }
+};
+
+
+var uniformsObjMid = {
+    colors: {
+        type: 'v3',
+        value: new THREE.Vector3(0.0, 0.0, 0.0)
+    },
+    Alpha: {
+        type: 'f',
+        value: 1.0
+    },
+    light: {
+        type: 'v3',
+        value: new THREE.Vector3(0.5, 0.2, 1.0)
+    }
+};
+
+
+var uniformsObjBack = {
     colors: {
         type: 'v3',
         value: new THREE.Vector3(0.0, 0.0, 0.0)
@@ -219,8 +267,26 @@ function init() {
     CONTROLS.dampingFactor = 0.25;
 
     // MATERIALS
-    var materialObj = new THREE.ShaderMaterial({
-        uniforms: uniforms,
+    var materialSphere = new THREE.ShaderMaterial({
+        uniforms: uniformsSphere,
+        vertexShader: document.getElementById("simple.vs").textContent,
+        fragmentShader: document.getElementById("simple.fs").textContent
+    });
+    
+     var materialObjFront = new THREE.ShaderMaterial({
+        uniforms: uniformsObjFront,
+        vertexShader: document.getElementById("simple.vs").textContent,
+        fragmentShader: document.getElementById("simple.fs").textContent
+    });
+    
+     var materialObjMid = new THREE.ShaderMaterial({
+        uniforms: uniformsObjMid,
+        vertexShader: document.getElementById("simple.vs").textContent,
+        fragmentShader: document.getElementById("simple.fs").textContent
+    });
+    
+     var materialObjBack = new THREE.ShaderMaterial({
+        uniforms: uniformsObjBack,
         vertexShader: document.getElementById("simple.vs").textContent,
         fragmentShader: document.getElementById("simple.fs").textContent
     });
@@ -273,11 +339,11 @@ function init() {
 
     // GEOMETRIES
     var geometrySphere = new THREE.SphereGeometry(0.25, 32, 32);
-    var geometrySkybox = new THREE.BoxGeometry(20, 20, 20);
+    var geometrySkybox = new THREE.BoxGeometry(30, 30, 30);
 
     var geometryObjFront = new THREE.BoxGeometry(0.1, 0.2, 0.1);
     var geometryObjMid = new THREE.BoxGeometry(0.05, 0.1, 0.1);
-    var geometryObjBack = new THREE.BoxGeometry(0.025, 0.05, 0.1);
+    var geometryObjBack = new THREE.BoxGeometry(.125, 0.05, 0.3);
 
     // CERCLES D'OBJETS
     var PI = 3.14;
@@ -287,7 +353,7 @@ function init() {
     for (var theta = 0; theta < 2 * PI; theta += theta_scale) {
         var x = 3 * Math.cos(theta);
         var y = 3 * Math.sin(theta);
-        OBJECTS_FRONT[numberOfObjectsFront] = new THREE.Mesh(geometryObjFront, materialObj);
+        OBJECTS_FRONT[numberOfObjectsFront] = new THREE.Mesh(geometryObjFront, materialObjFront);
         OBJECTS_FRONT[numberOfObjectsFront].position.x = x;
         OBJECTS_FRONT[numberOfObjectsFront].position.z = 0;
         OBJECTS_FRONT[numberOfObjectsFront].position.y = y;
@@ -300,7 +366,7 @@ function init() {
     for (var theta = 0; theta < 2 * PI; theta += theta_scale) {
         var x = 2 * Math.cos(theta);
         var y = 2 * Math.sin(theta);
-        OBJECTS_MID[numberOfObjectsMid] = new THREE.Mesh(geometryObjMid, materialObj);
+        OBJECTS_MID[numberOfObjectsMid] = new THREE.Mesh(geometryObjMid, materialObjMid);
         OBJECTS_MID[numberOfObjectsMid].position.x = x;
         OBJECTS_MID[numberOfObjectsMid].position.z = -3;
         OBJECTS_MID[numberOfObjectsMid].position.y = y;
@@ -314,7 +380,7 @@ function init() {
     for (var theta = 0; theta < 2 * PI; theta += theta_scale) {
         var x = 1 * Math.cos(theta);
         var y = 1 * Math.sin(theta);
-        OBJECTS_BACK[numberOfObjectsBack] = new THREE.Mesh(geometryObjBack, materialObj);
+        OBJECTS_BACK[numberOfObjectsBack] = new THREE.Mesh(geometryObjBack, materialObjBack);
         OBJECTS_BACK[numberOfObjectsBack].position.x = x;
         OBJECTS_BACK[numberOfObjectsBack].position.z = -5;
         OBJECTS_BACK[numberOfObjectsBack].position.y = y;
@@ -325,9 +391,9 @@ function init() {
     }
 
     // SPHERE  + "SKYBOX"
-    OBJ_SPHERE = new THREE.Mesh(geometrySphere, materialObj);
-    OBJ_SPHERE2 = new THREE.Mesh(geometrySphere, materialObj);
-    OBJ_SPHERE3 = new THREE.Mesh(geometrySphere, materialObj);
+    OBJ_SPHERE = new THREE.Mesh(geometrySphere, materialSphere);
+    OBJ_SPHERE2 = new THREE.Mesh(geometrySphere, materialSphere);
+    OBJ_SPHERE3 = new THREE.Mesh(geometrySphere, materialSphere);
     
     OBJ_SPHERE2.position.x = 5
     OBJ_SPHERE3.position.x = -5
@@ -337,8 +403,8 @@ function init() {
     OBJ_SKYBOX = new THREE.Mesh(geometrySkybox, materialSkybox);
 
     SCENE.add(OBJ_SPHERE);
-    SCENE.add(OBJ_SPHERE2);
-    SCENE.add(OBJ_SPHERE3);
+   // SCENE.add(OBJ_SPHERE2);
+   // SCENE.add(OBJ_SPHERE3);
     SCENE.add(OBJ_SKYBOX);
 
     for (var i = 0; i < 5; i++) {
