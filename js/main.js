@@ -15,12 +15,14 @@ document.addEventListener('keydown', function (evt) {
 
         Math.seedrandom(nombreMagique + startTime);
 
-        var radius = 20;
-        var numberOfObjects = 60;
+        var radius = 10;
+        var numberOfObjects = 5;
 
-        var objects = [];
+        //var objects = [];
 
         for (var i = 0; i < numberOfObjects; i++) {
+
+            /*
             var obj = new THREE.Mesh(geometry, material);
 
             obj.position.x = (Math.random() - 0.5) * radius;
@@ -42,11 +44,21 @@ document.addEventListener('keydown', function (evt) {
             SCENE.add(obj);
 
             objects.push(obj);
+            */
+
+            //SCENE.add(particleSystem);
+
+            options[i].position.x = (Math.random() - 0.5) * radius;
+            options[i].position.y = (Math.random() - 0.5) * radius;
+            options[i].position.z = (Math.random() - 0.5) * radius;
         }
+
+        particleSystemEnabled = true;
 
         setTimeout(function () {
             for (var i = 0; i < numberOfObjects; i++) {
-                SCENE.remove(objects[i]);
+                //SCENE.remove(objects[i]);
+                particleSystemEnabled = false;
             }
         }, 200);
     }
@@ -122,18 +134,16 @@ function update() {
         //            uniforms.colors.value.x = 0.0;
         //        }
 
-        if(basse /200 > 0)
-        {
+        if (basse / 200 > 0) {
             OBJ_SPHERE.scale.x = basse / 200;
             OBJ_SPHERE.scale.y = basse / 200;
-            OBJ_SPHERE.scale.z = basse / 200;    
-        }
-        else{
+            OBJ_SPHERE.scale.z = basse / 200;
+        } else {
             OBJ_SPHERE.scale.x = 100;
             OBJ_SPHERE.scale.y = 100;
             OBJ_SPHERE.scale.z = 100;
         }
-        
+
 
 
         for (var index = 0; index < OBJECTS_FRONT.length; index += 5) {
@@ -148,7 +158,7 @@ function update() {
         }
 
         for (var index = 0; index < OBJECTS_MID.length; index += 5) {
-            if(treble > 0)
+            if (treble > 0)
                 OBJECTS_MID[index].scale.z = treble;
         }
 
@@ -174,6 +184,26 @@ function update() {
             OBJECTS_FRONT[i].rotateX(rotationFrontObjectsStep);
         }
         rotationFrontObjects -= rotationFrontObjectsStep;
+    }
+
+    // PARTICLES
+    var delta = clock.getDelta() * spawnerOptions.timeScale;
+    tick += delta;
+
+    if (tick < 0) tick = 0;
+
+    if (delta > 0 && particleSystemEnabled) {
+        for (var i = 0; i < 5; i++) {
+            for (var x = 0, maxLoop = spawnerOptions.spawnRate * delta; x < maxLoop; x++) {
+                // Yep, that's really it.  Spawning particles is super cheap, and once you spawn them, the rest of
+                // their lifecycle is handled entirely on the GPU, driven by a time uniform updated below
+                particleSystems[i].spawnParticle(options[i]);
+            }
+        }
+    }
+    
+    for (var i = 0; i < 5; i++) {
+        particleSystems[i].update(tick);
     }
 }
 

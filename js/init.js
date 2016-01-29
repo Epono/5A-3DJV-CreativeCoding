@@ -126,6 +126,78 @@ var rotationFrontObjects = 0;
 var rotationFrontObjectsMax = 3 * Math.PI;
 var rotationFrontObjectsStep = Math.PI / 15;
 
+var tick = 0,
+    clock = new THREE.Clock(true),
+    gui = new dat.GUI(),
+    options, spawnerOptions, particleSystems = [];
+
+// options passed during each spawned
+options = [{
+    position: new THREE.Vector3(0, 0, 0),
+    positionRandomness: 0.,
+    velocity: new THREE.Vector3(),
+    velocityRandomness: 5.,
+    color: 0xaa88ff,
+    colorRandomness: .2,
+    turbulence: 0.,
+    lifetime: 5,
+    size: 20,
+    sizeRandomness: 1
+}, {
+    position: new THREE.Vector3(0, 0, 0),
+    positionRandomness: 0.,
+    velocity: new THREE.Vector3(),
+    velocityRandomness: 5.,
+    color: 0xaa88ff,
+    colorRandomness: .2,
+    turbulence: 0.,
+    lifetime: 5,
+    size: 20,
+    sizeRandomness: 1
+}, {
+    position: new THREE.Vector3(0, 0, 0),
+    positionRandomness: 0.,
+    velocity: new THREE.Vector3(),
+    velocityRandomness: 5.,
+    color: 0xaa88ff,
+    colorRandomness: .2,
+    turbulence: 0.,
+    lifetime: 5,
+    size: 20,
+    sizeRandomness: 1
+}, {
+    position: new THREE.Vector3(0, 0, 0),
+    positionRandomness: 0.,
+    velocity: new THREE.Vector3(),
+    velocityRandomness: 5.,
+    color: 0xaa88ff,
+    colorRandomness: .2,
+    turbulence: 0.,
+    lifetime: 5,
+    size: 20,
+    sizeRandomness: 1
+}, {
+    position: new THREE.Vector3(0, 0, 0),
+    positionRandomness: 0.,
+    velocity: new THREE.Vector3(),
+    velocityRandomness: 5.,
+    color: 0xaa88ff,
+    colorRandomness: .2,
+    turbulence: 0.,
+    lifetime: 5,
+    size: 20,
+    sizeRandomness: 1
+}];
+
+spawnerOptions = {
+    spawnRate: 15000,
+    horizontalSpeed: 1.5,
+    verticalSpeed: 1.33,
+    timeScale: 1
+}
+
+var particleSystemEnabled = false;
+
 //////////////////////////////////////////////////////////////////////////////////// INIT SCENE
 function init() {
     SCENE = new THREE.Scene();
@@ -256,6 +328,14 @@ function init() {
 
     SCENE.add(OBJ_SPHERE);
     SCENE.add(OBJ_SKYBOX);
+
+    for (var i = 0; i < 5; i++) {
+        var particleSystem = new THREE.GPUParticleSystem({
+            maxParticles: 250000
+        });
+        SCENE.add(particleSystem);
+        particleSystems.push(particleSystem);
+    }
 
     // MOUSE
     CANVAS.addEventListener('mousemove', function (evt) {
