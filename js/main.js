@@ -18,36 +18,7 @@ document.addEventListener('keydown', function (evt) {
         var radius = 10;
         var numberOfObjects = 5;
 
-        //var objects = [];
-
         for (var i = 0; i < numberOfObjects; i++) {
-
-            /*
-            var obj = new THREE.Mesh(geometry, material);
-
-            obj.position.x = (Math.random() - 0.5) * radius;
-            obj.position.y = (Math.random() - 0.5) * radius;
-            obj.position.z = (Math.random() - 0.5) * radius;
-
-            obj.scale.x = Math.random();
-            obj.scale.y = Math.random();
-            obj.scale.z = Math.random();
-
-            obj.rotation.x = Math.random();
-            obj.rotation.y = Math.random();
-            obj.rotation.z = Math.random();
-
-            obj.material.color.r = Math.random();
-            obj.material.color.g = Math.random();
-            obj.material.color.b = Math.random();
-
-            SCENE.add(obj);
-
-            objects.push(obj);
-            */
-
-            //SCENE.add(particleSystem);
-
             options[i].position.x = (Math.random() - 0.5) * radius;
             options[i].position.y = (Math.random() - 0.5) * radius;
             options[i].position.z = (Math.random() - 0.5) * radius;
@@ -85,22 +56,7 @@ function update() {
     previousTime = Date.now();
 
     for (var i = 0; i < OBJECTS_MID.length; i++) {
-        OBJECTS_MID[i].rotation.y += move ;
-        //OBJECTS_FRONT[i].position.x += move;
-        //OBJECTS_FRONT[i].position.z += move;
-    }
-
-    for (var i = 0; i < OBJECTS_FRONT.length; i += 2) {
-        //OBJECTS_FRONT[i].position.x += move;
-        //OBJECTS_FRONT[i].scale.x += scaleValue;
-    }
-
-    for (var i = 1; i < OBJECTS_FRONT.length; i += 5) {
-        //OBJECTS_FRONT[i].position.x += move;
-
-        //OBJECTS_FRONT[i].scale.x += scaleValue + anotherScaleValue;
-        //OBJECTS_MID[i].scale.z += scaleValue + anotherScaleValue * 9;
-        //OBJECTS_BACK[i].scale.y += scaleValue + anotherAnotherScaleValue * 3;
+        OBJECTS_MID[i].rotation.y += move;
     }
 
     actualValue += move;
@@ -130,49 +86,48 @@ function update() {
         uniformsObjFront.colors.value.x = 1.0; //mySoundAnalyser.getEnergy("bass") / 255.0;
         uniformsObjFront.colors.value.y = mySoundAnalyser.getEnergy("mid") / 255.0;
         uniformsObjFront.colors.value.z = 0.7; // mySoundAnalyser.getEnergy("treble") / 255.0;
-        
-        uniformsObjMid.colors.value.x = 0.0;//mySoundAnalyser.getEnergy("bass") / 255.0;
+
+        uniformsObjMid.colors.value.x = 0.0; //mySoundAnalyser.getEnergy("bass") / 255.0;
         uniformsObjMid.colors.value.y = 0.9;
         uniformsObjMid.colors.value.z = 0.5; // mySoundAnalyser.getEnergy("treble") / 255.0;
-        
-        
-        uniformsObjBack.colors.value.x = 0.6;//mySoundAnalyser.getEnergy("bass") / 255.0;
+
+
+        uniformsObjBack.colors.value.x = 0.6; //mySoundAnalyser.getEnergy("bass") / 255.0;
         uniformsObjBack.colors.value.y = 0.0;
         uniformsObjBack.colors.value.z = 0.0; // mySoundAnalyser.getEnergy("treble") / 255.0;
-        
-        
-        uniformsSphere.colors.value.x = 24/255;//mySoundAnalyser.getEnergy("bass") / 255.0;
-        uniformsSphere.colors.value.y = 234/255;
-        uniformsSphere.colors.value.z = 245/255; // mySoundAnalyser.getEnergy("treble") / 255.0;
-        
-        
-       
 
-        OBJ_SPHERE.scale.x = basse / 100;
-        OBJ_SPHERE.scale.y = basse / 100;
-        OBJ_SPHERE.scale.z = basse / 100;
+        uniformsSphere.colors.value.x = 24 / 255; //mySoundAnalyser.getEnergy("bass") / 255.0;
+        uniformsSphere.colors.value.y = 234 / 255;
+        uniformsSphere.colors.value.z = 245 / 255; // mySoundAnalyser.getEnergy("treble") / 255.0;
 
-        
-        for (var index = 0; index < OBJECTS_MID.length; index += 1) {
-            
-            OBJECTS_MID[index].scale.z = analyseResult[index]; 
-            
+        var sphereScale = basse / 100;
+        if (mouseSpeed > 0) {
+            OBJ_SPHERE.scale.x = sphereScale;
+            OBJ_SPHERE.scale.y = sphereScale;
+            OBJ_SPHERE.scale.z = sphereScale;
         }
-        
-        
-        
+
+        for (var index = 0; index < OBJECTS_MID.length; index += 1) {
+            if (analyseResult[index] > 0) {
+                OBJECTS_MID[index].scale.z = analyseResult[index];
+            }
+        }
+
         for (var index = 0; index < OBJECTS_FRONT.length; index += 1) {
-            if (basse > 0) {
+            if (basse / 20 > 0) {
                 OBJECTS_FRONT[index].scale.x = basse / 20;
-                //OBJECTS_FRONT[index].scale.y = basse / 80;
-                //OBJECTS_FRONT[index].scale.z = basse / 5;
             }
         }
 
         for (var index = 0; index < OBJECTS_MID.length; index += 5) {
-            //OBJECTS_MID[index].scale.z = treble * 10;
-            OBJECTS_BACK[index].scale.y = mid * 3   ; 
+            if (mid * 3 > 0) {
+                OBJECTS_BACK[index].scale.y = mid * 3;
+            }
         }
+
+        OBJ_SKYBOX.scale.x = basse / 300;
+        OBJ_SKYBOX.scale.y = basse / 300;
+        OBJ_SKYBOX.scale.z = basse / 300;
     }
 
     if (skyboxRotationEnabled) {
@@ -210,8 +165,6 @@ function update() {
     if (delta > 0 && particleSystemEnabled) {
         for (var i = 0; i < 5; i++) {
             for (var x = 0, maxLoop = spawnerOptions.spawnRate * delta; x < maxLoop; x++) {
-                // Yep, that's really it.  Spawning particles is super cheap, and once you spawn them, the rest of
-                // their lifecycle is handled entirely on the GPU, driven by a time uniform updated below
                 particleSystems[i].spawnParticle(options[i]);
             }
         }
