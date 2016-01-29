@@ -9,6 +9,7 @@ var OBJ_SPHERE = null;
 var OBJ_SPHERE2 = null;
 var OBJ_SPHERE3 = null;
 var OBJ_SKYBOX = null;
+var OBJ_SKYBOX2 = null
 
 var OBJECTS_FRONT = [];
 var OBJECTS_MID = [];
@@ -120,6 +121,13 @@ var uniformsSkyboxFront = {
     color: {
         type: 'v3',
         value: new THREE.Vector3(1.0, 1.0, 0.0)
+    }
+}
+
+var uniformsSkybox2 = {
+    texture: {
+        type: 't',
+        value: new THREE.ImageUtils.loadTexture("assets/textures/lucas.jpg")
     }
 }
 
@@ -271,9 +279,28 @@ function init() {
 
     var materialSkybox = new THREE.MeshFaceMaterial(mats);
 
+    var textureLoader = new THREE.TextureLoader();
+    textureLoader.load('assets/textures/lucas.jpg', function (texture) {
+        console.log(texture);
+
+        var mats2 = [];
+        for (var i = 0; i < 6; i++) {
+            mats2.push(new THREE.MeshBasicMaterial({
+                map: texture,
+                side: THREE.DoubleSide
+            }));
+        }
+        var materialSkybox2 = new THREE.MeshFaceMaterial(mats2);
+
+        OBJ_SKYBOX2 = new THREE.Mesh(geometrySkybox2, materialSkybox2)
+
+        SCENE.add(OBJ_SKYBOX2);
+    });
+
     // GEOMETRIES
     var geometrySphere = new THREE.SphereGeometry(0.25, 32, 32);
     var geometrySkybox = new THREE.BoxGeometry(20, 20, 20);
+    var geometrySkybox2 = new THREE.BoxGeometry(500, 500, 500);
 
     var geometryObjFront = new THREE.BoxGeometry(0.1, 0.2, 0.1);
     var geometryObjMid = new THREE.BoxGeometry(0.05, 0.1, 0.1);
@@ -328,12 +355,12 @@ function init() {
     OBJ_SPHERE = new THREE.Mesh(geometrySphere, materialObj);
     OBJ_SPHERE2 = new THREE.Mesh(geometrySphere, materialObj);
     OBJ_SPHERE3 = new THREE.Mesh(geometrySphere, materialObj);
-    
+
     OBJ_SPHERE2.position.x = 5
     OBJ_SPHERE3.position.x = -5
     OBJ_SPHERE2.position.y = 5
     OBJ_SPHERE3.position.y = 5
-    
+
     OBJ_SKYBOX = new THREE.Mesh(geometrySkybox, materialSkybox);
 
     SCENE.add(OBJ_SPHERE);
